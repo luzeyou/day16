@@ -17,7 +17,6 @@ class TaskModelForm(BootStrapModelForm):
 
 
 def task_list(request):
-
     queryset = models.Task.objects.all().order_by("-id")
 
     form = TaskModelForm()
@@ -47,11 +46,8 @@ def task_add(request):
     form = TaskModelForm(data=request.POST)
     if form.is_valid():
         form.save()
-
         data_dict = {"status": True}
         return HttpResponse(json.dumps(data_dict))
 
     data_dict = {"status": False, "error": form.errors}
     return HttpResponse(json.dumps(data_dict))
-
-
