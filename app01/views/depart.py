@@ -42,3 +42,7 @@ def depart_edit(request, nid):
     title = request.POST.get("title")
     models.Department.objects.filter(id=nid).update(title=title)
     return redirect("/depart/list/")
+
+
+def depart_multi(request):
+    
