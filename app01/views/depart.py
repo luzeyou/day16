@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from app01 import models
 from app01.utils.pagination import Pagination
 from app01.utils.form import UserModelForm, PrettyModelForm, PrettyEditModelForm
+from openpyxl import load_workbook
 
 
 def depart_list(request):
@@ -46,3 +47,14 @@ def depart_edit(request, nid):
 
 def depart_multi(request):
     
+    file_object = request.FILES.get("exc")
+    wb = load_workbook(file_object)
+    sheet = wb.worksheets[0]
+
+    for row in sheet.iter_rows(min_row=2):
+        text = row[0].value
+        exists = models.Department.objects.filter(title=text).exists()
+        if not exists:
+            models.Department.objects.create(title=text)
+
+    return redirect("/depart/list/")
